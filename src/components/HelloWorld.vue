@@ -1,19 +1,33 @@
 <template>
-  <div style="background:#ECECEC; padding:30px">
-    <a-card title="Card title" :bordered="false" style="width: 300px">
-
-    <template slot="title" class="ant-card-actions">
+  <div class="global-home">
+      <a-card hoverable style="width:360px;">
+        <img
+          slot="cover"
+          alt="example"
+          src="./../assets/sandclock.gif" 
+        />
+        <!-- <template slot="actions" class="ant-card-actions">
+          <a-icon key="setting" type="setting" />
+          <a-icon key="edit" type="edit" />
+          <a-icon key="ellipsis" type="ellipsis" />
+        </template> -->
+        <a-card-meta>
+          <a-row slot="avatar">
+            <a-col :span="8" style="">
+                <img
+                  width="46px"
+                  src="./../assets/favicon.png" 
+                />
+            </a-col>
+            <a-col :span="16">
+              <h3 style="text-align:center">oh captain my captain</h3>
+            </a-col>
+          </a-row>
           
-    </template>
-      <img  src="./../assets/sandclock.gif" alt="">
-     
-      <p>
 
-        
-      </p>
-      <p>Card content</p>
-      <p>Card content</p>
-    </a-card>
+          
+        </a-card-meta>
+      </a-card>
   </div>
 </template>
 
@@ -26,20 +40,24 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style lang="less">
+.global-home{
+  .ant-card-meta-avatar{
+    padding: 0px;
+    width: 100%;
+  }
+
+  .ant-card-body{
+    padding: 30px 8px;
+
+    h3{
+      line-height: 50px;
+      padding: 0px;
+      text-align: center;
+      margin: 0px;
+    }
+  }
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
+</style>>
+
+
