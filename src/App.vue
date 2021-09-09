@@ -46,7 +46,7 @@
                       </p>
                     </div>  
                   </a-col>
-                  <a-col :span="6">
+                  <a-col :span="10">
                     <div>
                       <p style="padding-top:36px;text-align:left">
                         <a-icon type="check" style="padding-right:8px;color:#fa8c16;font-size:26px" />
@@ -119,7 +119,7 @@ export default {
       this.resultObj={
         low:lowValue,
         height:heightValue,
-        average:(lowValue+heightValue)/2
+        average:((lowValue+heightValue)/2).toFixed(6)
       };
 
       this.$nextTick(()=>{
