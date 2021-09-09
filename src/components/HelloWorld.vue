@@ -13,14 +13,16 @@
         </template> -->
         <a-card-meta>
           <a-row slot="avatar">
-            <a-col :span="8" style="">
+            <a-col :span="6" style="">
                 <img
+                  :style="contenteditable?{transform:'rotate(15deg)'}:{}"
                   width="46px"
                   src="./../assets/favicon.png" 
+                  @click="saveSloganHandle"
                 />
             </a-col>
-            <a-col :span="16">
-              <h3 style="text-align:center">oh captain my captain</h3>
+            <a-col :span="18">
+              <h3 id="slogan" :contenteditable="contenteditable" style="text-align:center" @dblclick="dblclickHandle">{{slogan}}</h3>
             </a-col>
           </a-row>
           
@@ -33,7 +35,34 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  data() {
+    return {
+      slogan:'',
+      contenteditable:false,
+    };
+  },   
+  created(){
+    this.initFunc();
+  },
+  watch:{
+
+  },
+  methods:{
+    initFunc:function(){
+      let _text=(localStorage.getItem("slogan")||"");
+      if(!_text) localStorage.setItem("slogan","oh captain my captain!");
+
+      this.slogan=localStorage.getItem("slogan");
+    },
+    dblclickHandle:function(){
+      this.contenteditable=true;
+    },
+    saveSloganHandle:function(){
+      let _text=document.querySelector("#slogan").innerHTML;
+      localStorage.setItem("slogan",_text);
+      this.contenteditable=false;
+    }
+  },
   props: {
     msg: String
   }
