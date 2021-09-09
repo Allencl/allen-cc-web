@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <a-row style="padding-top:160px">
+    <a-row style="padding-top:60px">
       <a-col :offset="2" :span="6">
         <HelloWorld msg="Welcome to Your Vue.js App"/>
       </a-col>
@@ -10,7 +10,7 @@
             <a-collapse v-model="activeKey" @change="changeCollapse">
               <a-collapse-panel key="1" header="计算中间值">
               <a-row>
-                <a-col :span="6">
+                <a-col :span="10">
                   <div style="text-align:left;">
                     <label style="text-align:right;width:60px;display:inline-block;padding-right:8px;">height: </label>
                     <a-input-number v-model="heightValue"  :min="0" :default-value="0" style="width:160px" />                  
@@ -22,43 +22,40 @@
                   </div>
 
                 </a-col>
-                <a-col :span="16" style="text-align:left">
+                <a-col :span="12" style="text-align:left">
                   <a-button @click="computedMedianFunc" type="primary" shape="circle" style="margin-top:8px;height:60px;width:60px">
-                    <a-icon style="font-size:36px" type="android" />
+                    <a-icon style="font-size:36px;position:relative;top:3px;" type="android" />
                   </a-button>
-
-                  <a-result v-if="showResult" title="oh captain my captain!">
-                    <template #icon>
-                      <a-icon type="smile" theme="twoTone" />
-                    </template>
-                    <a-row>
-                          <a-col :span="8">
-                            <div>
-                              <p>
-                                <a-icon type="vertical-align-top" style="font-size:28px" />
-                                <strong>{{resultObj.height}}</strong>
-                              </p>
-                              <p>
-                                <a-icon type="vertical-align-bottom" style="font-size:28px"/>
-                                <strong>{{resultObj.low}}</strong>
-                              </p>
-                            </div>  
-                          </a-col>
-                          <a-col :span="16">
-                            <div>
-                              <p>
-                              <a-icon type="vertical-align-bottom" style="font-size:28px" />
-                              <strong>{{resultObj.average}}</strong>
-                            </p>
-                          </div>    
-                      </a-col>
-                    </a-row>
-
-  
-                  </a-result>
-
                 </a-col>
               </a-row>
+
+              <transition name="fade">
+                <a-row v-if="showResult" style="margin-top:12px;background:#fafafa">
+                  <a-col :span="4" :offset="1">
+                      <a-icon type="smile" theme="twoTone" style="padding-top:25px;font-size:46px" />
+                  </a-col>
+                  <a-col :span="6">
+                    <div style="padding-top:15px">
+                      <p style="text-align:left">
+                        <a-icon type="vertical-align-top" style="padding-right:8px;color:#13c2c2;font-size:26px" />
+                        <strong style="font-style:italic;position:relative;top:-2px;font-size:18px">{{resultObj.height}}</strong>
+                      </p>
+                      <p style="text-align:left">
+                        <a-icon type="vertical-align-bottom" style="padding-right:8px;color:#13c2c2;font-size:26px"/>
+                        <strong style="font-style:italic;position:relative;top:-2px;font-size:18px">{{resultObj.low}}</strong>
+                      </p>
+                    </div>  
+                  </a-col>
+                  <a-col :span="6">
+                    <div>
+                      <p style="padding-top:36px;text-align:left">
+                        <a-icon type="check" style="padding-right:8px;color:#fa8c16;font-size:26px" />
+                        <strong style="text-decoration:underline;position:relative;top:-2px;font-size:18px">{{resultObj.average}}</strong>
+                      </p>
+                    </div>    
+                  </a-col>
+                </a-row>
+              </transition>
 
 
 
@@ -109,6 +106,9 @@ export default {
       this.activeKey=JSON.parse(_keys);
     },
     changeCollapse:function(keys){
+      this.showResult=false;
+      this.lowValue=0;
+      this.heightValue=0;
       localStorage.setItem("homeCollapseActiveKey",JSON.stringify(keys));
     },
     computedMedianFunc:function(){
@@ -141,6 +141,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  // margin-top: 60px;
 }
 </style>
