@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <a-row style="padding-top:60px">
-      <a-col :offset="2" :span="6">
+      <a-col :offset="1" :span="8">
         <HelloWorld msg="Welcome to Your Vue.js App"/>
       </a-col>
-      <a-col :span="12">
+      <a-col  :offset="1" :span="12">
 
         <div>
             <a-collapse v-model="activeKey" @change="changeCollapse">

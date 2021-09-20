@@ -1,6 +1,6 @@
 <template>
   <div class="global-home">
-      <a-card hoverable style="width:360px;">
+      <a-card hoverable >
         <img
           slot="cover"
           alt="example"
