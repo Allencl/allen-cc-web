@@ -61,8 +61,24 @@
 
 
               </a-collapse-panel>
-              <a-collapse-panel key="2" header="待续...">
-                  <p style="text-align:left">正在建设中。。。</p>
+              <a-collapse-panel key="2" header="计时器">
+                  <div style="text-align:left">
+                    <div style="display:inline-block">
+                      <a-input-number v-model="timeValue"  :min="0" :max="59" :default-value="0" style="width:80px;margin-right:18px" />  
+                      <a-button type="primary" style="border-color:#87d068;background:#87d068;" icon="plus" @click="addTime"></a-button>  
+                    </div>
+                    <div style="display:inline-block">
+                      <ul v-if="toggleTabs">
+                        <a-tag 
+                          style="margin-right:18px"
+                          v-for="(o,i) in timeValueList"
+                          :key="i"
+                          closable
+                          @close="closeTag(o)"
+                          color="#87d068">{{o}}</a-tag>
+                      </ul>                            
+                    </div>
+                  </div>
               </a-collapse-panel>
               <a-collapse-panel key="3" header="待续...">
                   <p style="text-align:left">正在建设中。。。</p>
@@ -74,7 +90,17 @@
 
       </a-col>
     </a-row>
-
+    <div style="visibility:hidden;">
+        <audio 
+            id="audioIDS"
+            ref="audioID" 
+            :src="audioMp3"
+            muted="muted"
+            autoplay="true"
+        >
+            Your browser does not support the audio element.
+        </audio>
+    </div>
     
   </div>
 </template>
@@ -89,18 +115,103 @@ export default {
   },
   data() {
     return {
+      audioMp3: require('./assets/mp3.mp3'),  // 音乐
+
+      toggleTabs:true,
+      timeValue:0,
       lowValue:0,
       heightValue:0,
       resultObj:{},
 
       showResult:false,
       activeKey: [],
+      timeValueList:[],
+      timerGlobal1:null,   // 计时器
+
     };
   },  
   created(){
     this.initFunc();
+    this.initTime();
+    this.messageInit();  // 初始化 消息
+    this.showConfirm();
   },
   methods:{
+    showConfirm:function() {
+      let that=this;
+      this.$confirm({
+        title: '获取音频权限?',
+        onOk() {
+          that.playFunc();
+        },
+        onCancel() {},
+      });
+    },
+
+    /**
+     * 初始化 消息
+    */
+    messageInit: function(){
+        var that=this;
+
+        this.$nextTick(()=>{
+
+          // 消息
+          Notification.requestPermission().then(function(permission){
+              if(permission=="granted"){
+                  that.timerGlobal1 && clearInterval(that.timerGlobal1);
+                  var timer1=setInterval(() => {
+                      that.timerHandle();
+                  },39000);
+                  that.timerGlobal1=timer1;
+              }else{
+                  alert("未获取权限！");
+              }
+          });          
+        });
+    },
+    /**
+     * 计时器  
+    */
+    timerHandle: function(){
+        var _date= new Date().getMinutes();
+
+        if( this.timeValueList.filter(o=>o==_date)["length"] ){
+            new Notification(`⏳ ${_date}`,{
+                icon:"https://gw.alipayobjects.com/zos/rmsportal/UTjFYEzMSYVwzxIGVhMu.png"
+            });
+            // document.querySelector("#audioIDS").prop('muted',true);
+            this.playFunc();
+        }
+    },
+    playFunc:function(){
+      document.getElementById("audioIDS").muted = false;
+      document.getElementById("audioIDS").play();     
+    },
+    closeTag:function(o){
+      let _list=this.timeValueList.filter(k=>k!=o);
+      this.timeValueList=_list;
+
+      this.toggleTabs=false;
+      this.$nextTick(()=>{
+        this.toggleTabs=true;
+        this.updateTime();
+      });
+    },
+    initTime:function(){
+      this.timeValueList=JSON.parse(localStorage.getItem("timeBuffer")||"[]");
+    },
+    addTime:function(){
+      this.timeValueList=this.timeValueList.concat([this.timeValue]);
+
+
+      this.$nextTick(()=>{
+        this.updateTime();
+      });      
+    },
+    updateTime:function(){
+      localStorage.setItem("timeBuffer",JSON.stringify(this.timeValueList));
+    },
     initFunc:function(){
       let _keys=(localStorage.getItem("homeCollapseActiveKey")||"[]");
       this.activeKey=JSON.parse(_keys);
