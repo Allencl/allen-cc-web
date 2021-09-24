@@ -21,8 +21,8 @@
                   @click="saveSloganHandle"
                 />
             </a-col>
-            <a-col :span="18">
-              <h3 id="slogan" :contenteditable="contenteditable" style="text-align:center" @dblclick="dblclickHandle">{{slogan}}</h3>
+            <a-col :span="18" style="padding-top:15px;">
+              <p id="slogan" :contenteditable="contenteditable" style="margin:0px;text-align:center" @dblclick="dblclickHandle">{{slogan}}</p>
             </a-col>
           </a-row>
           
