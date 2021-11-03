@@ -81,7 +81,41 @@
                   </div>
               </a-collapse-panel>
               <a-collapse-panel key="3" header="待续...">
-                  <p style="text-align:left">正在建设中。。。</p>
+                <div>
+                  <a-card class="trend-result-box">
+                    <a-tag v-for="(o,i) in upBuffer" :key="i" color="#f50">
+                      {{o}}
+                      <a-icon type="close" @click="closeUpBuffer(o)" />
+                    </a-tag>                      
+                  </a-card>
+                  <a-card class="trend-result-box">
+                    <a-tag v-for="(o,i) in downBuffer" :key="i" color="#87d068">
+                      {{o}}
+                      <a-icon type="close" @click="closeDownBuffer(o)" />
+                    </a-tag>
+                  </a-card>                  
+                  <a-card class="trend-card-btn">
+                    <p>JPY</p>
+                    <div>
+                      <a-button @click="addUpBuffer('JPY')" type="danger" icon="arrow-up" size="small" />
+                      <a-button @click="addDownBuffer('JPY')" type="danger" style="border-color:#87d068;background:#87d068" icon="arrow-down" size="small" />
+                    </div>
+                  </a-card>  
+                  <a-card class="trend-card-btn">
+                    <p>EUR</p>
+                    <div>
+                      <a-button @click="addUpBuffer('EUR')" type="danger" icon="arrow-up" size="small" />
+                      <a-button @click="addDownBuffer('EUR')" type="danger" style="border-color:#87d068;background:#87d068" icon="arrow-down" size="small" />
+                    </div>
+                  </a-card>       
+                  <a-card class="trend-card-btn">
+                    <p>GBP</p>
+                    <div>
+                      <a-button @click="addUpBuffer('GBP')" type="danger" icon="arrow-up" size="small" />
+                      <a-button @click="addDownBuffer('GBP')" type="danger" style="border-color:#87d068;background:#87d068" icon="arrow-down" size="small" />
+                    </div>
+                  </a-card>                             
+                </div>
               </a-collapse-panel>
             </a-collapse>
           </div>
@@ -128,6 +162,9 @@ export default {
       timeValueList:[],
       timerGlobal1:null,   // 计时器
 
+      upBuffer:[],
+      downBuffer:[],
+
     };
   },  
   created(){
@@ -135,8 +172,42 @@ export default {
     this.initTime();
     this.messageInit();  // 初始化 消息
     this.showConfirm();
+    this.initBuffer();
   },
   methods:{
+    initBuffer:function(){
+      this.upBuffer=JSON.parse(localStorage.getItem("upBuffer")||"[]");
+      this.downBuffer=JSON.parse(localStorage.getItem("downBuffer")||"[]");
+    },
+    setBuffer:function(){
+      let that=this;
+      localStorage.setItem("upBuffer",JSON.stringify(that.upBuffer));
+      localStorage.setItem("downBuffer",JSON.stringify(that.downBuffer));
+    },
+    closeUpBuffer:function(key){
+      this.upBuffer=this.upBuffer.filter(o=>o!=key);
+      this.$nextTick(()=>{
+        this.setBuffer();
+      });
+    },
+    closeDownBuffer:function(key){
+      this.downBuffer=this.downBuffer.filter(o=>o!=key);
+      this.$nextTick(()=>{
+        this.setBuffer();
+      });      
+    },
+    addUpBuffer:function(key){
+      this.upBuffer=[...new Set(this.upBuffer.concat([key]))];
+      this.$nextTick(()=>{
+        this.setBuffer();
+      });      
+    },
+    addDownBuffer:function(key){
+      this.downBuffer=[...new Set(this.downBuffer.concat([key]))];
+      this.$nextTick(()=>{
+        this.setBuffer();
+      });      
+    },    
     showConfirm:function() {
       let that=this;
       this.$confirm({
@@ -253,5 +324,46 @@ export default {
   text-align: center;
   color: #2c3e50;
   // margin-top: 60px;
+}
+
+.trend-result-box{
+    width: 82px;
+    float: left;
+    height: 110px;
+    margin-bottom: 12px;
+    margin-left: 12px;
+
+
+    .ant-card-body{
+      padding: 0px;
+      padding-top: 10px;
+      padding-left: 6px;
+
+      .ant-tag{
+        display: inline-block;
+        min-width: 58px;
+        margin-bottom: 8px;
+      }
+    }
+}
+
+.trend-card-btn{
+  width: 120px;
+  float: right;
+  margin-bottom: 12px;
+  margin-left: 12px;
+
+
+
+  .ant-card-body{
+    >p{
+      font-size: 18px;
+    }
+
+    .ant-btn{
+      margin-left: 4px;
+      margin-right: 4px;
+    }
+  }
 }
 </style>
