@@ -80,7 +80,7 @@
                     </div>
                   </div>
               </a-collapse-panel>
-              <a-collapse-panel key="3" header="待续...">
+              <a-collapse-panel key="3" header="趋势">
                 <div>
                   <a-card class="trend-result-box">
                     <a-tag v-for="(o,i) in upBuffer" :key="i" color="#f50">
