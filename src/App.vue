@@ -267,8 +267,11 @@ export default {
         }
     },
     playFunc:function(){
-      document.getElementById("audioIDS").muted = false;
-      document.getElementById("audioIDS").play();     
+      let _obj=document.getElementById("audioIDS");
+
+      _obj.volume =0.2;
+      _obj.muted = false;
+      _obj.play(); 
     },
     closeTag:function(o){
       let _list=this.timeValueList.filter(k=>k!=o);
