@@ -93,7 +93,11 @@
                       {{o}}
                       <a-icon type="close" @click="closeDownBuffer(o)" />
                     </a-tag>
-                  </a-card>                  
+                  </a-card>   
+                  <a-tag @click="tagsActive" class="usd-tag-box" :color="USDBufferActive?'#f50':'#87d068'">
+                    <a-icon :type="USDBufferActive?'arrow-up':'arrow-down'" />
+                    USD
+                  </a-tag>
                   <a-card class="trend-card-btn">
                     <p>JPY</p>
                     <div>
@@ -164,6 +168,7 @@ export default {
 
       upBuffer:[],
       downBuffer:[],
+      USDBufferActive:false,
 
     };
   },  
@@ -175,9 +180,15 @@ export default {
     this.initBuffer();
   },
   methods:{
+    tagsActive:function(){
+      this.USDBufferActive=!this.USDBufferActive;
+      localStorage.setItem("USDTagActive",JSON.stringify(this.USDBufferActive));
+    },
     initBuffer:function(){
       this.upBuffer=JSON.parse(localStorage.getItem("upBuffer")||"[]");
       this.downBuffer=JSON.parse(localStorage.getItem("downBuffer")||"[]");
+
+      this.USDBufferActive=JSON.parse(localStorage.getItem("USDTagActive")||false);
     },
     setBuffer:function(){
       let that=this;
@@ -313,6 +324,15 @@ export default {
 </script>
 
 <style lang="less">
+
+.usd-tag-box{
+  cursor: pointer;
+  margin-top: 40px;
+  user-select: none;
+  // height: 336px;
+  font-size: 18px;
+  padding: 8px 8px;
+}
 
 .ant-collapse-header{
   text-align: left;
