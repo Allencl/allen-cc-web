@@ -94,10 +94,10 @@
                       <a-icon type="close" @click="closeDownBuffer(o)" />
                     </a-tag>
                   </a-card>   
-                  <a-tag @click="tagsActive" class="usd-tag-box" :color="USDBufferActive?'#f50':'#87d068'">
+                  <!-- <a-tag @click="tagsActive" class="usd-tag-box" :color="USDBufferActive?'#f50':'#87d068'">
                     <a-icon :type="USDBufferActive?'arrow-up':'arrow-down'" />
                     USD
-                  </a-tag>
+                  </a-tag> -->
                   <a-card class="trend-card-btn">
                     <p>JPY</p>
                     <div>
@@ -118,7 +118,14 @@
                       <a-button @click="addUpBuffer('GBP')" type="danger" icon="arrow-up" size="small" />
                       <a-button @click="addDownBuffer('GBP')" type="danger" style="border-color:#87d068;background:#87d068" icon="arrow-down" size="small" />
                     </div>
-                  </a-card>                             
+                  </a-card>  
+                  <a-card class="trend-card-btn">
+                    <p>USD</p>
+                    <div>
+                      <a-button @click="addUpBuffer('USD')" type="danger" icon="arrow-up" size="small" />
+                      <a-button @click="addDownBuffer('USD')" type="danger" style="border-color:#87d068;background:#87d068" icon="arrow-down" size="small" />
+                    </div>
+                  </a-card>                                             
                 </div>
               </a-collapse-panel>
             </a-collapse>
